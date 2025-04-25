@@ -25,7 +25,7 @@ export function TaskCard({ data, onClick }: TaskCardProps) {
 
   return (
     <Container onClick={onClick} onKeyUp={handleKeyUp} tabIndex={0}>
-      <div className={`status taskStatus ${status}`}>
+      <div className={`status taskStatus ${taskStatus}`}>
         {pttaskStatus[taskStatus]}
       </div>
 

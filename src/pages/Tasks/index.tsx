@@ -5,6 +5,7 @@ import { TaskDataTypes } from "../../@types/tasks";
 import { useQueryTasks } from "../../hooks/useQueryTasks";
 import { Pagination } from "../../components/Pagination";
 import { set } from "react-hook-form";
+import { ModalTaskDetails } from "../../components/ModalTaskDetails";
 
 export function Tasks() {
   const [showModalTaskDetails, setShowModalTaskDetails] = useState(false);
@@ -50,7 +51,7 @@ export function Tasks() {
         <span className="queryError">Erro na requisição das tarefas!</span>
       )}
 
-      <div className="taskContainer scrollBar">
+      <div className="tasksContainer scrollBar">
         {data?.length == 0 ? (
           <p className="loading">Sem tarefas para mostrar</p>
         ) : (
@@ -76,6 +77,8 @@ export function Tasks() {
           changeLimit={changeLimit}
         />
       </div>
+
+      {showModalTaskDetails && <ModalTaskDetails toggleModal={toggleModal} />}
     </Container>
   );
 }

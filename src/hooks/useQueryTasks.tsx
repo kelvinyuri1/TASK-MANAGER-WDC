@@ -103,7 +103,7 @@ export function useQueryTasks() {
   }, [page, totalPages, searchParams, navigate, location]);
 
   const query = useQuery({
-    queryKey: ["tasksData"],
+    queryKey: ["tasksData", page, limit, filter],
     queryFn: () => getTasks({ page, limit, filter }),
   });
 

@@ -35,7 +35,7 @@ export const Container = styled.div`
   }
 
   .late {
-    background: ${({ theme }) => theme.colors.DANGER200}CC;
+    background: ${({ theme }) => theme.colors.DANGER400}CC;
   }
 
   .taskDetails {
