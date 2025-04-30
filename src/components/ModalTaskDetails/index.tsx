@@ -33,6 +33,15 @@ export function ModalTaskDetails({ toggleModal }: ModalTaskDetailsProps) {
         <div className="formContainer">
           <div className="headerForm">
             <h2>Detalhes da tarefa</h2>
+
+            <i
+              className="material-icons"
+              onClick={toggleModal}
+              tabIndex={0}
+              onKeyUp={handleKeyUp}
+            >
+              close
+            </i>
           </div>
 
           <FormMutationTask isUpdate={true} toggleModal={toggleModal} />
