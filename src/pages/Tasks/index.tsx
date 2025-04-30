@@ -2,13 +2,15 @@ import { useState } from "react";
 import { TaskCard } from "../../components/TaskCard";
 import { Container } from "./style";
 import { TaskDataTypes } from "../../@types/tasks";
-import { useQueryTasks } from "../../hooks/useQueryTasks";
 import { Pagination } from "../../components/Pagination";
-import { set } from "react-hook-form";
 import { ModalTaskDetails } from "../../components/ModalTaskDetails";
+import { useTask } from "../../hooks/userTask";
+import { useQueryTasks } from "../../hooks/useQueryTasks";
 
 export function Tasks() {
   const [showModalTaskDetails, setShowModalTaskDetails] = useState(false);
+  
+  const { setTaskData } = useTask();
 
   const {
     data,
@@ -27,6 +29,7 @@ export function Tasks() {
 
   function addTaskToggleModal(task: TaskDataTypes) {
     toggleModal();
+    setTaskData(task);
   }
   return (
     <Container>

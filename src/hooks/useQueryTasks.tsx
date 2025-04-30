@@ -23,13 +23,9 @@ export function useQueryTasks() {
   const location = useLocation();
   const searchParams = useSearchParams();
 
-  async function getTasks({
-    page = 1,
-    limit = 10,
-    filter = "all",
-  }: GetTasksProps) {
+  async function getTasks({ page = 1, limit = 10, filter = "all" }: GetTasksProps) {
     if (page <= 0) page = 1;
-    const offset = (page - 1) * limit;
+    const offset = limit * (page - 1);
 
     await changeTotalPages(filter, limit);
 
@@ -56,14 +52,14 @@ export function useQueryTasks() {
   function nextPage() {
     if (page < totalPages) {
       setPage((prev) => prev + 1);
-      navigate(`/tasks?page=${page + 1}&filter=${filter}`);
+      navigate(`?page=${page + 1}&filter=${filter}`);
     }
   }
 
   function prevPage() {
     if (page > 1) {
       setPage((prev) => prev - 1);
-      navigate(`/tasks?page=${page - 1}&filter=${filter}`);
+      navigate(`?page=${page - 1}&filter=${filter}`);
     }
   }
 
@@ -80,24 +76,25 @@ export function useQueryTasks() {
   }
 
   useEffect(() => {
-    if (location.pathname == "/tasks") {
-      const pageQuery = Number(searchParams[0].get("page"));
-      const filterQuery = searchParams[0].get("filter") as FilterType;
+    if (location.pathname != "/tasks") return;
 
-      setPage(pageQuery || 1);
-      setFilter(filterQuery || "all");
+    const pageQuery = Number(searchParams[0].get("page"));
+    const filterQuery = searchParams[0].get("filter") as FilterType;
 
-      if (totalPages > 0) {
-        if (pageQuery > totalPages) {
-          navigate(`/tasks?page=${totalPages}&filter=${filterQuery}`);
-          setPage(totalPages);
-          return;
-        }
+    setPage(pageQuery || 1);
+    setFilter(filterQuery || "all");
 
-        if (pageQuery < 1) {
-          navigate(`/tasks?page=1&filter=${filterQuery}`);
-          setPage(totalPages);
-        }
+    if (totalPages > 0) {
+      if (pageQuery > totalPages) {
+        navigate(`?filter=${filterQuery}&page=${totalPages}`);
+        setPage(totalPages);
+        return;
+      }
+
+      if (pageQuery < 1) {
+        navigate(`?filter=${filterQuery}&page=1`);
+        setPage(1);
+        return;
       }
     }
   }, [page, totalPages, searchParams, navigate, location]);
@@ -105,6 +102,7 @@ export function useQueryTasks() {
   const query = useQuery({
     queryKey: ["tasksData", page, limit, filter],
     queryFn: () => getTasks({ page, limit, filter }),
+    refetchInterval: 1000 * 60 * 1, // 1 minute
   });
 
   return {
